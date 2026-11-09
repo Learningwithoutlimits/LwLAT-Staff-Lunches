@@ -1,0 +1,143 @@
+@import './ui.css';
+
+/* Security review: dated evidence, grouped controls and deployment confirmations. */
+.security-eyebrow{display:block;color:var(--accent);font-size:.6875rem;font-weight:800;letter-spacing:.02em;margin-bottom:6px}
+.security-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.security-summary>div{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px}
+.security-summary strong{display:block;font-size:1.25rem;color:var(--text);margin-bottom:4px}
+.security-summary span,.security-note,.security-evidence{color:var(--text3);font-size:.8125rem;line-height:1.6}
+.security-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.security-groups .card{min-width:0}
+.security-controls{margin-top:16px}
+.security-control{border-top:1px solid var(--border)}
+.security-control summary{display:flex;align-items:center;gap:10px;justify-content:space-between;cursor:pointer;padding:14px 0;font-weight:600;list-style:none}
+.security-control summary::before{content:'+';color:var(--accent);font-weight:800}
+.security-control[open] summary::before{content:'−'}
+.security-control summary>span:first-child{flex:1}
+.security-control summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.security-control>div{padding-bottom:16px;line-height:1.65;color:var(--text2)}
+.security-evidence{margin-top:10px;overflow-wrap:anywhere}
+.security-status{display:inline-block;flex-shrink:0;padding:4px 9px;background:var(--ok-bg);color:var(--ok-txt);font-size:.6875rem;font-weight:700;border-radius:20px}
+.security-checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+.security-checks>div{border-left:3px solid var(--accent);padding-left:12px}
+.security-checks h3{font-size:.875rem;margin-bottom:4px}
+.security-checks p{color:var(--text2);line-height:1.65;overflow-wrap:anywhere}
+.security-secondary{grid-template-columns:repeat(2,minmax(0,1fr))}
+.security-secondary ul{padding-left:20px;margin:16px 0;color:var(--text2);line-height:1.7}
+.security-secondary li+li{margin-top:8px}
+@media(max-width:1100px){.security-groups{grid-template-columns:1fr}.security-summary{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.security-summary,.security-checks{grid-template-columns:1fr}}
+
+body{font-size:.875rem}
+
+/* Slim header: logo, page title and account on one line, tabs underneath */
+.htitle{display:flex;flex-direction:column;line-height:1.2;padding-left:16px;border-left:1px solid rgba(255,255,255,.22)}
+.htitle b{font-size:1.125rem;font-weight:800;letter-spacing:-.01em}
+.htitle .sub{font-size:.75rem;color:var(--hdr-soft);font-weight:600;letter-spacing:.02em;}
+.logo{height:46px}
+
+/* Card heading row: title + one-line description on the left, actions on the right */
+.chead{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.chead>div:first-child{flex:1 1 260px;min-width:0}
+.chead .acts{display:flex;gap:6px;flex-wrap:wrap}
+.card h2{font-size:1.0625rem;font-weight:800}
+.card .sub{color:var(--text3);font-size:.8125rem;margin-top:2px}
+
+/* Search box with a magnifier, and filter chips that carry their own counts (people roles) */
+.search{position:relative;display:flex;flex:1 1 240px;max-width:420px}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text3);pointer-events:none}
+.search .in{padding-left:34px}
+.fchips{display:flex;gap:4px;flex-wrap:wrap}
+.fchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border2);background:var(--bg);border-radius:20px;padding:5px 11px;font-size:.75rem;font-weight:700;color:var(--text2);transition:background .15s,border-color .15s}
+.fchip:hover{background:var(--bg2)}
+.fchip i{width:8px;height:8px;border-radius:50%;background:var(--tc)}
+.fchip .ct{font-weight:600;color:var(--text3);font-variant-numeric:tabular-nums}
+.fchip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.fchip[aria-pressed="true"] .ct{color:inherit;opacity:.8}
+.fchip[aria-pressed="true"] i{box-shadow:0 0 0 2px var(--on-accent)}
+
+/* Row actions (remove, view as) stay out of the way until the row is hovered or focused */
+.rowacts{white-space:nowrap;opacity:0;transition:opacity .12s}
+tr:hover .rowacts,tr:focus-within .rowacts,tr.picked .rowacts,tr[aria-expanded="true"] .rowacts{opacity:1}
+@media (hover:none){.rowacts{opacity:1}}
+td.rowacts{text-align:right}
+
+/* People */
+.ptools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.cfoot{display:flex;flex-direction:column;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.cfoot details.help{margin:0}
+.envadmins{font-size:.8125rem;color:var(--text3);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border-radius:20px;padding:3px 10px;font-size:.75rem;font-weight:600;color:var(--text2)}
+table.people .prow{cursor:pointer}
+table.people .prow:hover td{background:var(--bg2)}
+table.people .prow[aria-expanded="true"] td{background:var(--bg2)}
+.caret{transition:transform .15s;font-size:.625rem}
+.caret[aria-expanded="true"]{transform:rotate(90deg)}
+.pdetail>td{border-top:0;background:var(--bg2);padding:4px 12px 16px}
+.cats{display:flex;gap:4px;flex-wrap:wrap}
+.cat{display:inline-flex;align-items:center;gap:5px;font-size:.6875rem;font-weight:700;border-radius:20px;padding:3px 9px;background:var(--tbg);color:var(--tfg)}
+.cat i{width:7px;height:7px;border-radius:50%;background:var(--tc)}
+.who-sub{display:block;color:var(--text3);font-size:.75rem;font-weight:400;margin-top:1px}
+
+/* Site + category toggle chips */
+.sitechips{display:flex;gap:4px;flex-wrap:wrap}
+.sc{border:1px solid var(--border2);background:var(--bg);border-radius:20px;padding:4px 10px;font-size:.75rem;font-weight:700;color:var(--text3)}
+.sc[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.sc:disabled{opacity:.35;cursor:not-allowed}
+.sc .sw{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--tc);margin-right:5px;vertical-align:0}
+.sc svg{width:12px;height:12px;margin-right:5px;vertical-align:-2px}
+/* "Add a person" folds out above the list from "+ Add person" */
+.addbar{margin:0 0 16px;padding:16px;border-radius:12px;background:var(--bg2);border:1px solid var(--border2);animation:fold .18s var(--ease)}
+.addbar .addtitle{font-weight:800;font-size:.875rem;margin-bottom:12px}
+.addacts{display:flex;gap:8px;margin-left:auto}
+@keyframes fold{from{opacity:0;transform:translateY(-4px)}}
+
+.in.changed{border-color:var(--warn-line);background:var(--warn-bg)}
+select.in{padding:8px}
+td.tbar{border-left:4px solid var(--tc);padding-left:10px}
+tr.retired td{opacity:.55}
+
+/* "+ Add" menu */
+.menuwrap{position:relative}
+.cv{display:inline-block;width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);margin-left:2px}
+.menu{position:absolute;right:0;top:calc(100% + 6px);z-index:30;width:280px;background:var(--bg);border:1px solid var(--border2);border-radius:12px;box-shadow:var(--shadow-lg);padding:6px;display:flex;flex-direction:column;animation:fold .15s var(--ease)}
+.menu button{display:flex;flex-direction:column;gap:1px;text-align:left;border:0;background:transparent;border-radius:8px;padding:9px 12px}
+.menu button:hover,.menu button:focus-visible{background:var(--bg2);outline:0}
+.menu b{font-size:.875rem}
+.menu span{font-size:.75rem;color:var(--text3)}
+
+/* Sign-ins: a count on the tab, and turned-away rows tinted */
+.tct{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;margin-left:7px;border-radius:10px;background:var(--yellow);color:#1b2600;font-size:.6875rem;font-weight:800;vertical-align:1px}
+#seenBody tr.waiting td{background:color-mix(in srgb,var(--warn-bg) 60%,transparent)}
+#seenBody tr.waiting td:first-child{box-shadow:inset 3px 0 0 var(--warn-line)}
+
+@media (max-width:720px){
+  .search{max-width:none}
+  .ftools .acts,.addacts{margin-left:0;width:100%}
+  .ftools .acts>*{flex:1}
+  .ftools .acts .btn,.addacts .btn{width:100%}
+  .menu{left:0;right:auto;width:min(280px,calc(100vw - 64px))}
+}
+
+/* Unsaved changes bar */
+.savebar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--hdr-3);color:#fff;border-radius:16px;padding:10px 12px 10px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 18px 40px rgba(0,0,0,.3);z-index:40;width:min(600px,calc(100% - 32px))}
+.savebar span{flex:1;font-weight:600}
+.savebar .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+.savebar .btn.ghost:hover{background:rgba(255,255,255,.1)}
+.savebar .btn.primary{background:var(--yellow);color:#1b2600}
+
+/* Dialogs */
+textarea.in{min-height:150px;font-family:ui-monospace,Consolas,monospace;font-size:.75rem}
+.preview{font-size:.75rem;color:var(--text3);max-height:120px;overflow:auto;background:var(--bg2);border-radius:10px;padding:8px 10px}
+.toast{top:20px;bottom:auto;transform:translateX(-50%) translateY(-20px)}
+.denied{max-width:520px;margin:60px auto;text-align:center;padding:30px}
+
+@media (max-width:720px){ .htitle{display:none} }
+
+/* Editable tables read as plain text until hovered or focused, so rows of inputs don't look like a form */
+#sitesBody .in,#groupsBody .in{border-color:transparent;background:transparent}
+#sitesBody tr:hover .in,#groupsBody tr:hover .in{border-color:var(--border2);background:var(--bg)}
+#sitesBody .in:focus,#groupsBody .in:focus{border-color:var(--accent);background:var(--bg)}
+/* Save only appears once something in the row has changed */
+.sitetabs{scrollbar-width:none}
+

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#003B39">
+<title>Admin · Staff Free Lunches · LwLAT</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="/assets/theme-boot.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/styles/admin.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header>
+  <div class="hwrap">
+    <div class="hrow">
+      <a href="/" aria-label="Back to the app"><img class="logo" src="/assets/logo_white.png" alt="Learning without Limits Academy Trust"></a>
+      <div class="htitle"><b>Staff Free <span class="mint">Lunches</span></b><span class="sub">Admin portal</span></div>
+      <div class="who">
+        <span class="whoname" id="whoName"></span>
+        <a class="hlink" href="/">Back to app</a>
+        <button type="button" class="hlink" data-settings title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="lbl">Settings</span></button>
+        <a class="hlink" data-pulse href="https://pulse.lwlat.org.uk/" title="Back to LwLAT Pulse" aria-label="Back to LwLAT Pulse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l2.5-6 5 12 3-8 1.5 2H22"/></svg><span class="lbl">Pulse</span></a>
+        <a class="hlink" href="/auth/logout">Sign out</a>
+      </div>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="people">People &amp; access</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="sites">Sites &amp; rules</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="seen">Sign-ins<span class="tct" id="seenCount" title="Turned away and not yet given access" hidden></span></button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="audit">Change log</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="security" aria-controls="securityReview">Security review</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <div class="banner" id="previewBanner" hidden>Demo mode: in-memory data, so changes aren't saved anywhere.</div>
+  <div class="card denied" id="blocked" hidden><h2>Admins only</h2><p id="blockedMsg" style="margin-top:8px"></p><p style="margin-top:16px"><a class="btn primary" href="/">Back to the app</a></p></div>
+
+  <!-- PEOPLE -->
+  <section data-panel="people">
+    <div class="card">
+      <div class="chead">
+        <div><h2>People</h2><p class="sub">People appear here after they sign in. Click someone to change their access.</p><p class="hint scopenote" id="scopeNote" hidden></p></div>
+        <div class="acts"><button type="button" class="btn ghost" id="openViewAs">View as…</button><button type="button" class="btn primary" id="openAdd" aria-expanded="false" aria-controls="addPerson">+ Add person</button></div>
+      </div>
+      <form class="addbar" id="addPerson" hidden>
+        <div class="addtitle">Add a person</div>
+        <div class="row">
+          <label class="lab" style="flex:2 1 260px">Email<input class="in" id="npEmail" type="email" placeholder="name@lwlat.org.uk" required></label>
+          <label class="lab" style="flex:0 1 150px">Role<select class="in" id="npRole"></select></label>
+          <label class="lab" style="flex:1 1 200px">Note<input class="in" id="npNote" placeholder="e.g. Reception"></label>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div class="lab">Sites<div class="sitechips" id="npSites"></div></div>
+          <div class="addacts"><button type="button" class="btn ghost" id="cancelAdd">Cancel</button><button class="btn primary" type="submit">Add</button></div>
+        </div>
+      </form>
+      <div class="ptools">
+        <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="in" id="pq" type="search" placeholder="Search by name, email or note" aria-label="Search people"></label>
+        <div class="fchips" id="roleChips" role="group" aria-label="Show only"></div>
+      </div>
+      <div class="tw"><table class="people">
+        <thead><tr><th style="width:36px"></th><th style="width:38%">Person</th><th>Access</th><th style="width:22%">Note</th><th></th></tr></thead>
+        <tbody id="peopleBody"></tbody>
+      </table></div>
+      <div class="cfoot">
+      <div class="envadmins" id="envAdmins"></div>
+      <details class="help" id="accessHelp"><summary>How access is worked out</summary><div class="helpbody">
+        <p>First match wins:</p>
+        <ol><li><b>Built-in admins</b>: the app's owners plus the <span class="mono">ADMIN_EMAILS</span> setting in Netlify (always overall admin, listed below)</li>
+        <li><b>Manual overrides</b> for people listed here. Automatic entries keep following the defaults until edited.</li><li><b>Entra groups</b></li><li><b>Central domains</b> (all sites)</li><li><b>Site domains</b> (set on the Sites tab). By default, <span class="mono">lwlat.org.uk</span> gets LwLAT Central only.</li></ol>
+        <p><span class="pill admin">Admin</span> everything · <span class="pill central">Central</span> all sites · <span class="pill siteadmin">Site admin</span> chosen sites, plus this portal for those sites · <span class="pill site">Site</span> chosen sites only · <span class="pill blocked">Blocked</span> no access</p>
+      </div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- SITES & RULES (full admins only) -->
+  <section data-panel="sites" hidden>
+    <div class="card">
+      <div class="chead">
+        <div><h2>Sites</h2><p class="sub">The 5 academies and the trust (LwLAT Central), and the staff email domain for each one.</p></div>
+        <div class="acts"><button type="button" class="btn ghost sm" id="addSite">+ Add site</button></div>
+      </div>
+      <details class="help"><summary>How site domains work</summary><div class="helpbody">
+        <p>Anyone signing in on a site's email domain gets that site automatically, e.g. <span class="mono">@babington.lwlat.org.uk</span> → Babington. Domains match exactly: <span class="mono">babington.lwlat.org.uk</span> never counts as <span class="mono">lwlat.org.uk</span>.</p>
+      </div></details>
+      <div class="tw"><table>
+        <thead><tr><th>Code</th><th style="width:34%">Name</th><th style="width:40%">Email domains</th><th></th></tr></thead>
+        <tbody id="sitesBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card" id="groupsCard">
+      <div class="chead">
+        <div><h2>Entra groups</h2><p class="sub">Give access by Microsoft Entra security group.</p></div>
+        <div class="acts"><button type="button" class="btn ghost sm" id="addGroup">+ Add group rule</button></div>
+      </div>
+      <details class="help"><summary>Before you add a group</summary><div class="helpbody">
+        <p>Group rules need the <b>groups</b> claim turned on in the Entra app registration (Token configuration → Add groups claim → Security groups). Use the group's <b>object ID</b>, not its name.</p>
+      </div></details>
+      <div class="tw"><table>
+        <thead><tr><th style="width:34%">Group object ID</th><th>Label</th><th>Role</th><th>Sites</th><th></th></tr></thead>
+        <tbody id="groupsBody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card" id="centralCard">
+      <div class="chead"><div><h2>Central domains</h2><p class="sub">Anyone signing in with an email on these domains can see <b>every</b> site.</p></div></div>
+      <input class="in mono" id="centralDomains" placeholder="Optional domains with access to every site" aria-label="Central domains">
+    </div>
+  </section>
+
+  <!-- SIGN-INS -->
+  <section data-panel="seen" hidden>
+    <div class="card">
+      <div class="chead"><div><h2>Recent sign-ins</h2><p class="sub">Everyone who has tried to sign in, and the access they got. People who were turned away are listed first.</p></div></div>
+      <div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Last sign-in</th><th>Access now</th><th></th></tr></thead><tbody id="seenBody"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- CHANGE LOG -->
+  <section data-panel="audit" hidden>
+    <div class="card">
+      <div class="chead"><div><h2>Change log</h2><p class="sub">Every change, and who made it (last 6 months shown).</p></div></div>
+      <div class="tw"><table><thead><tr><th>When</th><th>Who</th><th>Change</th></tr></thead><tbody id="auditBody"></tbody></table></div>
+    </div>
+  </section>
+  <section data-panel="security" id="securityReview" role="tabpanel" aria-label="Security review" hidden></section>
+</main>
+
+<div class="savebar" id="savebar" hidden><span>You have unsaved access changes</span><button class="btn ghost" id="discard">Discard</button><button class="btn primary" id="save">Save changes</button></div>
+
+<dialog id="dlgViewAs"><form method="dialog" id="viewAsForm">
+  <div class="mhead"><div class="eb">Check access</div><h2>View the app as…</h2></div>
+  <div class="mbody">
+    <label class="lab">Account<input class="in" id="vaEmail" type="email" list="vaList" placeholder="name@babington.lwlat.org.uk" autocomplete="off" required></label>
+    <datalist id="vaList"></datalist>
+    <p class="hint">You'll see exactly what they see. It's read-only, ends after an hour or when you click <b>Stop viewing</b>, and each use goes in the change log.</p>
+  </div>
+  <div class="mfoot"><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn primary" type="submit">View as</button></div>
+</form></dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="/src/admin/main.ts"></script>
+</body>
+</html>

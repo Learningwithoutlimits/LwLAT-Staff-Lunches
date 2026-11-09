@@ -1,0 +1,9 @@
+{
+  // Netlify functions, edge function, tests and build config — run on Node / Deno
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["node"]
+  },
+  "include": ["netlify", "tests", "shared", "scripts", "vite.config.ts"]
+}

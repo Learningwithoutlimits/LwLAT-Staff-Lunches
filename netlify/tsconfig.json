@@ -1,0 +1,5 @@
+{
+  // Let editors discover the Node configuration for Netlify source files.
+  "extends": "../tsconfig.node.json",
+  "include": ["**/*.ts", "**/*.mts"]
+}

@@ -1,0 +1,84 @@
+/* ============================================================
+   TOKENS — shared by every page.
+   The colour tokens (--canvas … --danger-on) are generated per theme + mode by
+   src/lib/palette.ts and written on <html> (before first paint, by
+   /assets/theme-boot.js). The values here are the default LwLAT Teal theme,
+   used until that runs or if storage is blocked.
+   ============================================================ */
+:root{
+  --canvas:#e8f7f8;--bg:#fafeff;--bg2:#e5f2f3;--bg3:#d8e9ea;--text:#101d1e;--text2:#364c4d;--text3:#576e6f;
+  --border:rgba(42,63,64,0.09);--border2:rgba(42,63,64,0.16);--seg-track:#d7e8e9;--seg-active:#fafeff;
+  --accent:#007976;--accent-2:#006f87;--accent-rgb:0, 121, 118;--on-accent:#ffffff;--accent-soft:#d6f8f6;
+  --wash-1:rgba(0,121,118,0.1);--wash-2:rgba(83,163,242,0.07);
+  --hdr-1:#009390;--hdr-2:#006360;--hdr-3:#003937;--hdr-soft:#b6f2ef;
+  --ok-bg:#d6f7dc;--ok-txt:#005725;--ok-line:#88ca95;--ok-solid:#007835;--ok-on:#ffffff;
+  --warn-bg:#ffeaca;--warn-txt:#604100;--warn-line:#dbb06b;--warn-solid:#835a00;--warn-on:#ffffff;
+  --danger-bg:#ffe6e4;--danger-txt:#782a28;--danger-line:#f19e97;--danger-solid:#a83634;--danger-on:#ffffff;
+
+  /* Fixed brand colours (header shapes, print) */
+  --magenta:#d6519b; --yellow:#fddc10; --red:#df3a23; --lime:#cfda3f; --purple:#a75a9d;
+  /* Selected pill (Pulse): brand lime with ink text, 9:1 contrast, same in every theme */
+  --sel-bg:#ACCE33; --sel-txt:#14302F;
+
+  /* Families that aren't part of the theme: signed-out pink, site blue, lost grey */
+  --out-bg:#fbe6f1; --out-txt:#a5326f;
+  --info-bg:#e2effa; --info-txt:#1d5a8c;
+  --lost-bg:#3d4a4b; --lost-txt:#fff;
+
+  /* Text on a coloured category card */
+  --who-bg:rgba(255,255,255,.94); --who-txt:#13292a; --who-sub:#4e6667;
+
+  --ts:1; --ui-zoom:1;
+  --radius:14px; --radius-sm:10px;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 4px 14px rgba(16,24,40,.06);
+  --shadow-lg:0 30px 70px rgba(7,30,32,.35);
+  --ring:0 0 0 3px rgba(var(--accent-rgb),.3);
+  --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:light;
+}
+html.dark{
+  --canvas:#061011;--bg:#0f191a;--bg2:#142121;--bg3:#1c2b2b;--text:#e1f2f3;--text2:#a4bdbe;--text3:#7d9496;
+  --border:rgba(164,197,199,0.077);--border2:rgba(164,197,199,0.143);--seg-track:#030d0e;--seg-active:#233233;
+  --accent:#54d1cd;--accent-2:#55c4e5;--accent-rgb:84, 209, 205;--on-accent:#001b1a;--accent-soft:#012827;
+  --wash-1:rgba(84,209,205,0.13);--wash-2:rgba(50,132,208,0.08);
+  --hdr-1:#005351;--hdr-2:#003937;--hdr-3:#00201f;--hdr-soft:#a9e5e2;
+  --ok-bg:#15331c;--ok-txt:#aae5b5;--ok-line:#448c56;--ok-solid:#2e9e52;--ok-on:#07150a;
+  --warn-bg:#3a2705;--warn-txt:#f5cd90;--warn-line:#9e711e;--warn-solid:#b07b00;--warn-on:#191003;
+  --danger-bg:#431f1d;--danger-txt:#ffc3bd;--danger-line:#b25e59;--danger-solid:#d15c56;--danger-on:#1d0c0b;
+
+  --out-bg:#3d1b2d; --out-txt:#f2a9cf;
+  --info-bg:#15293d; --info-txt:#a9cdf0;
+  --lost-bg:#b9c6c6; --lost-txt:#0f191a;
+  --who-bg:rgba(6,14,15,.5); --who-txt:#f3f8f8; --who-sub:rgba(243,248,248,.75);
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.03);
+  --shadow-lg:0 30px 70px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+
+/* Categories: --tc fill, --ton text on the fill, --tbg / --tfg a soft tint */
+.t-Contractor{--tc:#9e1b2a;--ton:#fff;--tbg:#f6e1e3;--tfg:#7a1420}
+.t-Visitor{--tc:#a14f97;--ton:#fff;--tbg:#f4e6f2;--tfg:#7d3a74}
+.t-Staff{--tc:#2a74b3;--ton:#fff;--tbg:#e2effa;--tfg:#1d5a8c}
+html.dark .t-Contractor{--tc:#8e1f2c;--ton:#fff;--tbg:#34121a;--tfg:#f0a9b1}
+html.dark .t-Visitor{--tc:#94458a;--ton:#fff;--tbg:#3a1f36;--tfg:#e8b3df}
+html.dark .t-Staff{--tc:#2c69a0;--ton:#fff;--tbg:#15293d;--tfg:#a9cdf0}
+
+/* ---------- Base ---------- */
+*{box-sizing:border-box;margin:0}
+html{font-size:calc(16px * var(--ts))}
+body{font-family:"Open Sans",system-ui,sans-serif;color:var(--text);line-height:1.45;min-height:100vh;
+  background:radial-gradient(1100px 520px at 8% 0,var(--wash-1),transparent 70%),radial-gradient(900px 480px at 96% 0,var(--wash-2),transparent 70%),var(--canvas);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent)}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+html.hc :focus-visible{outline-width:4px;outline-color:var(--text)}
+
+/* Zoom (from Settings) scales the page but not the settings drawer, so it stays usable at 150% */
+body>header,body>main,dialog,.savebar,.toast{zoom:var(--ui-zoom)}
+
+/* Reduce motion, and the short fade while the theme changes */
+html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+html.theme-fade,html.theme-fade *{transition:background-color .25s ease,border-color .25s ease,color .25s ease,box-shadow .25s ease!important}

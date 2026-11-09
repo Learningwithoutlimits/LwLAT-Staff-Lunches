@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#003B39">
+<title>Staff Free Lunches · LwLAT</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="/assets/theme-boot.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/styles/home.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header>
+  <div class="hwrap">
+    <div class="hrow">
+      <div class="brand"><img class="logo" alt="Learning without Limits Academy Trust" src="/assets/logo_white.png"></div>
+      <div class="who">
+        <div class="avatar" id="avatar" aria-hidden="true"></div>
+        <span class="whoname" id="whoName"></span>
+        <a class="hlink" id="adminLink" href="/admin" hidden>Access</a>
+        <button type="button" class="hlink" data-settings title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="lbl">Settings</span></button>
+        <a class="hlink" data-pulse href="https://pulse.lwlat.org.uk/" title="Back to LwLAT Pulse" aria-label="Back to LwLAT Pulse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l2.5-6 5 12 3-8 1.5 2H22"/></svg><span class="lbl">Pulse</span></a>
+        <a class="hlink" href="/auth/logout">Sign out</a>
+      </div>
+    </div>
+    <div class="hero">
+      <div>
+        <div class="eyebrow"><span class="dot"></span><span>LwLAT IT Services</span></div>
+        <h1>Staff Free <span class="mint">Lunches</span></h1>
+      </div>
+      <div class="hstats" id="stats" aria-live="polite"></div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Sections" id="tabs" hidden>
+      <button type="button" class="tab" role="tab" id="tabDash" aria-controls="dash" aria-selected="true">Dashboard</button>
+      <button type="button" class="tab" role="tab" id="tabManage" aria-controls="manage" aria-selected="false" tabindex="-1">Manage staff</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <div class="banner" id="demoBanner" hidden>Demo mode: in-memory data, so nothing is saved and sign-in is skipped.</div>
+  <div class="viewas" id="viewAsBar" hidden><div><b id="viewAsName"></b><span>You're viewing the app as this person. It's read-only.</span></div><button type="button" class="btn" id="stopViewAs">Stop viewing</button></div>
+  <div class="blocked" id="noAccess" hidden>
+    <h2>No access</h2><p id="noAccessMsg"></p>
+    <p style="margin-top:16px"><a class="btn primary" href="/auth/logout">Sign in as someone else</a></p>
+  </div>
+
+  <!-- Dashboard: every site this person can see -->
+  <section id="dash" role="tabpanel" aria-labelledby="tabDash" hidden>
+    <h2 class="sr-only">Dashboard</h2>
+    <div class="sitecards" id="siteCards"></div>
+
+    <div class="toolbar">
+      <label class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Search staff" aria-label="Search staff"></label>
+      <select class="in" id="siteFilter" aria-label="Site" style="width:auto"></select>
+      <select class="in" id="dayFilter" aria-label="Show" style="width:auto"></select>
+      <button type="button" class="btn ghost" id="printDay">Print day list</button>
+      <button type="button" class="btn ghost" id="exportCsv">Export to CSV</button>
+    </div>
+    <div class="tablewrap"><table class="lunch">
+      <caption class="sr-only" id="dashCaption">Staff free lunches</caption>
+      <thead><tr><th scope="col">Name</th><th scope="col">Site</th><th scope="col" class="day">Mon</th><th scope="col" class="day">Tue</th><th scope="col" class="day">Wed</th><th scope="col" class="day">Thu</th><th scope="col" class="day">Fri</th></tr></thead>
+      <tbody id="dashRows"></tbody>
+    </table></div>
+    <p class="foot" id="dashFoot" aria-live="polite"></p>
+  </section>
+
+  <!-- Manage staff: admins and site admins, for the sites they run -->
+  <section id="manage" role="tabpanel" aria-labelledby="tabManage" hidden>
+    <h2 class="sr-only">Manage staff</h2>
+    <div class="toolbar">
+      <select class="in" id="mSite" aria-label="Site to manage" style="width:auto"></select>
+      <label class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="mq" type="search" placeholder="Search staff" aria-label="Search staff to manage"></label>
+      <button type="button" class="btn ghost" id="importBtn">Import staff list</button>
+      <button type="button" class="btn primary" id="addBtn">+ Add member of staff</button>
+    </div>
+    <p class="hint">Choose the days each person gets a free lunch. Changes save straight away.</p>
+    <div class="tablewrap"><table class="lunch">
+      <caption class="sr-only">Free lunch days by member of staff</caption>
+      <thead><tr><th scope="col">Name</th><th scope="col">Job title</th><th scope="col" class="day">Mon</th><th scope="col" class="day">Tue</th><th scope="col" class="day">Wed</th><th scope="col" class="day">Thu</th><th scope="col" class="day">Fri</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+      <tbody id="mRows"></tbody>
+    </table></div>
+    <p class="foot" id="mFoot"></p>
+  </section>
+</main>
+
+<div id="printArea" aria-hidden="true"></div>
+
+<dialog id="dlgAdd" aria-labelledby="addTitle"><form method="dialog" id="addForm">
+  <div class="mhead"><div class="eb">Add</div><h2 id="addTitle">Member of staff</h2></div>
+  <div class="mbody">
+    <label class="lab">Name<input class="in" id="aName" required maxlength="100" autocomplete="off"></label>
+    <label class="lab">Job title (optional)<input class="in" id="aJob" maxlength="100" autocomplete="off"></label>
+    <label class="lab">Work email (optional)<input class="in" id="aEmail" type="email" maxlength="120" autocomplete="off"></label>
+    <fieldset class="dayset"><legend>Free lunch on</legend><div id="aDays" class="daypick"></div></fieldset>
+    <div class="err" id="aErr" role="alert"></div>
+  </div>
+  <div class="mfoot"><span style="flex:1"></span><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn primary" type="submit">Add</button></div>
+</form></dialog>
+
+<dialog id="dlgRemove" aria-labelledby="remTitle"><form method="dialog" id="removeForm">
+  <div class="mhead"><div class="eb">Remove from the list</div><h2 id="remTitle"></h2></div>
+  <div class="mbody">
+    <p>They'll stop getting free lunches. The change log keeps a note of who removed them and why.</p>
+    <label class="lab">Reason<input class="in" id="rReason" required maxlength="200" placeholder="For example, left the school" list="reasons"></label>
+    <datalist id="reasons"><option value="Left the school"><option value="Moved to another site"><option value="Added by mistake"></datalist>
+    <div class="err" id="rErr" role="alert"></div>
+  </div>
+  <div class="mfoot"><span style="flex:1"></span><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn danger" type="submit">Remove</button></div>
+</form></dialog>
+
+<dialog id="dlgImport" aria-labelledby="impTitle"><form method="dialog" id="importForm">
+  <div class="mhead"><div class="eb">Import staff list</div><h2 id="impTitle"></h2></div>
+  <div class="mbody">
+    <p>Choose a CSV file of the full staff list for this site, with a <b>Name</b> column (or <b>First name</b> and <b>Surname</b>), and optionally <b>Job title</b> and <b>Email</b>. From Excel, use <b>File → Save as → CSV</b>.</p>
+    <p class="hint">The file is read on this computer. Only names, job titles and emails are sent. New people start with no free lunches; people already on the list keep theirs.</p>
+    <label class="lab">Staff list (CSV)<input class="in" id="iFile" type="file" accept=".csv,.txt,text/csv"></label>
+    <div id="iPreview" aria-live="polite"></div>
+    <div id="iMissingBox" hidden>
+      <label class="check"><input type="checkbox" id="iRemove"> <span id="iRemoveLbl"></span></label>
+      <label class="lab" id="iReasonLab" hidden>Reason<input class="in" id="iReason" maxlength="200" value="Not on the latest staff list"></label>
+    </div>
+    <div class="err" id="iErr" role="alert"></div>
+  </div>
+  <div class="mfoot"><span style="flex:1"></span><button type="button" class="btn ghost" data-close>Cancel</button><button class="btn primary" type="submit" id="iGo" disabled>Import</button></div>
+</form></dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script type="module" src="/src/home/main.ts"></script>
+</body>
+</html>

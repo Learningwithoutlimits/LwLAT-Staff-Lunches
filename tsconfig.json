@@ -1,0 +1,9 @@
+{
+  // Browser pages (src/) — bundled by Vite
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"]
+  },
+  "include": ["src", "shared"]
+}

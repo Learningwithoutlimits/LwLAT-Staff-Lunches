@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · Staff Free Lunches · LwLAT</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="/assets/theme-boot.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/styles/login.css">
+</head>
+<body>
+<div class="grid"></div>
+<main>
+  <img class="logo" src="/assets/logo_white.png" alt="Learning without Limits Academy Trust">
+  <div class="card">
+    <span class="eyebrow"><i></i>Staff only</span>
+    <h1>Staff Free <span class="mint">Lunches</span></h1>
+    <p class="sub">See which staff get a free lunch, Monday to Friday, at each LwLAT site. Sign in with your LwLAT Microsoft account to continue.</p>
+    <div class="msg" id="msg" role="status"></div>
+    <a class="ms" id="signin" href="/auth/login">
+      <svg width="20" height="20" viewBox="0 0 21 21" aria-hidden="true"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+      Sign in with Microsoft
+    </a>
+    <!-- TEMPLATE: the support address (shared/constants.ts SUPPORT_EMAIL) -->
+    <p class="help">Problems signing in? Contact <a href="mailto:your-team@lwlat.org.uk">your-team@lwlat.org.uk</a></p>
+  </div>
+  <footer>Learning without Limits Academy Trust · This site uses only the cookies it needs to keep you signed in.</footer>
+</main>
+<script type="module" src="/src/login/main.ts"></script>
+</body>
+</html>
